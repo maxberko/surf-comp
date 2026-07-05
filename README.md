@@ -25,6 +25,20 @@ cp .env.example .env         # renseigne URL + anon key du projet Supabase
 npm start                    # puis 'i' (iOS), 'a' (Android), 'w' (web) ou Expo Go
 ```
 
+### Mode démo (sans backend)
+
+Pour itérer sur l'UI sans projet Supabase, lance en **mode démo** : un backend
+factice en mémoire (crew + riders + faits + votes seedés) remplace Supabase, et la
+logique de scoring (2 témoins → validé → ledger, clôture d'award) est rejouée en
+local pour que le classement bouge en direct.
+
+```bash
+EXPO_PUBLIC_DEMO=1 npm run web      # ou: EXPO_PUBLIC_DEMO=1 npx expo start --web
+```
+
+Tu es auto-connecté en tant que « Toi » dans le crew « Les Barrels de Popoyo ».
+Le code vit dans `src/lib/demo.ts` (aucun impact sur le vrai backend).
+
 > Auth : active **Email → magic link** dans Supabase, et ajoute `poypoyo://` (natif)
 > + `http://localhost:8081` (web) dans **Auth → URL Configuration**. En Expo Go, le
 > code à 6 chiffres reçu par email fonctionne aussi (écran de login).
