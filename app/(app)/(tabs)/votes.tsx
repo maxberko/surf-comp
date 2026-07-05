@@ -123,7 +123,7 @@ export default function Votes() {
         <View style={styles.header}>
           <Title>Votes du soir</Title>
         </View>
-        <EmptyState emoji="🌙" title="Pas de session aujourd’hui" hint="Ouvre la session pour lancer les superlatifs." />
+        <EmptyState emoji="🌙" title="Pas de session ce soir" hint="Ouvre la session pour élire les plus grosses perfs 🍆" />
       </Screen>
     );
   }
@@ -141,7 +141,7 @@ export default function Votes() {
         <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
           {awards.length === 0 ? (
             <View style={styles.centered}>
-              <EmptyState emoji="🗳️" title="Superlatifs pas encore ouverts" hint="Ouvre-les en fin de session." />
+              <EmptyState emoji="🔥" title="Superlatifs pas encore ouverts" hint="Ouvre-les en fin de session pour désigner les gros bonnets 🍆" />
               <Button
                 label="Ouvrir les superlatifs"
                 onPress={() => openAwards.mutate(session.id)}

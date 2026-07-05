@@ -110,10 +110,20 @@ export function Pill({
   );
 }
 
-export function EmptyState({ emoji, title, hint }: { emoji: string; title: string; hint?: string }) {
+export function EmptyState({
+  emoji,
+  title,
+  hint,
+  art,
+}: {
+  emoji?: string;
+  title: string;
+  hint?: string;
+  art?: ReactNode;
+}) {
   return (
     <View style={styles.empty}>
-      <Text style={styles.emptyEmoji}>{emoji}</Text>
+      {art ?? (emoji ? <Text style={styles.emptyEmoji}>{emoji}</Text> : null)}
       <Text style={styles.emptyTitle}>{title}</Text>
       {hint ? <Text style={styles.emptyHint}>{hint}</Text> : null}
     </View>

@@ -66,8 +66,8 @@ export default function SessionScreen() {
         <View style={styles.centered}>
           <EmptyState
             emoji="🌅"
-            title="Pas encore de session aujourd’hui"
-            hint="Ouvre la session du jour pour commencer à logger."
+            title="Rien n’est encore sorti aujourd’hui"
+            hint="Ouvre la session pour commencer à te la raconter 🍆"
           />
           <Button label="Ouvrir la session du jour" onPress={open} loading={openSession.isPending} />
         </View>
@@ -146,13 +146,13 @@ export default function SessionScreen() {
             <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={colors.accent} />
           }
           ListEmptyComponent={
-            <EmptyState emoji="📝" title="Aucun fait loggé" hint="Sois le premier à te la raconter." />
+            <EmptyState emoji="🍆" title="Aucun fait loggé" hint="Sois le premier à sortir la tienne." />
           }
         />
       )}
 
       <Pressable style={styles.fab} onPress={() => router.push('/(app)/add-fact')}>
-        <Text style={styles.fabText}>＋ Ajouter un fait</Text>
+        <Text style={styles.fabText}>＋ Sors ta bite 🍆</Text>
       </Pressable>
     </Screen>
   );

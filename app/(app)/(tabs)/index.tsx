@@ -14,6 +14,7 @@ import {
 
 import { Avatar } from '@/components/Avatar';
 import { BiteMeter } from '@/components/BiteMeter';
+import { DickGlyph } from '@/components/DickGlyph';
 import { PalierCelebration } from '@/components/PalierCelebration';
 import { Body, Card, EmptyState, Loader, Pill, Screen, Title } from '@/components/ui';
 import { bitesLabel, cm } from '@/lib/format';
@@ -130,9 +131,9 @@ export default function Classement() {
           }
           ListEmptyComponent={
             <EmptyState
-              emoji="🌊"
-              title="Personne n’a encore marqué"
-              hint="Ouvre la session du jour et logge ton premier fait."
+              art={<DickGlyph size={84} />}
+              title="Personne n’a encore sorti la sienne"
+              hint="Ouvre la session et logge ton premier exploit 🍆"
             />
           }
           ListFooterComponent={
