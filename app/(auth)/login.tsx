@@ -1,7 +1,8 @@
 import * as Linking from 'expo-linking';
 import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 
+import { DickGlyph } from '@/components/DickGlyph';
 import { Body, Button, Field, Screen, Subtitle, Title } from '@/components/ui';
 import { supabase } from '@/lib/supabase';
 import { spacing } from '@/theme/colors';
@@ -55,9 +56,9 @@ export default function Login() {
         style={styles.flex}
       >
         <View style={styles.hero}>
-          <Text style={styles.logo}>🏄‍♂️</Text>
+          <DickGlyph size={104} />
           <Title>PoyPoyo Surf</Title>
-          <Subtitle>Le scoreboard entre potes. 21 cm = 1 🍆</Subtitle>
+          <Subtitle>Le scoreboard le plus bandant entre potes. 21 cm = 1 🍆</Subtitle>
         </View>
 
         <View style={styles.form}>
@@ -101,6 +102,5 @@ export default function Login() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   hero: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.sm },
-  logo: { fontSize: 64 },
   form: { gap: spacing.md, paddingBottom: spacing.xxl },
 });

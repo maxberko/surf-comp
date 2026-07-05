@@ -27,7 +27,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: 'Classement',
-          tabBarIcon: ({ focused }) => <Icon emoji="🏆" focused={focused} />,
+          tabBarIcon: ({ focused }) => <Icon emoji="🍆" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -41,14 +41,14 @@ export default function TabsLayout() {
         name="votes"
         options={{
           title: 'Votes',
-          tabBarIcon: ({ focused }) => <Icon emoji="🗳️" focused={focused} />,
+          tabBarIcon: ({ focused }) => <Icon emoji="🔥" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="rules"
         options={{
           title: 'Règles',
-          tabBarIcon: ({ focused }) => <Icon emoji="📖" focused={focused} />,
+          tabBarIcon: ({ focused }) => <Icon emoji="📏" focused={focused} />,
         }}
       />
     </Tabs>

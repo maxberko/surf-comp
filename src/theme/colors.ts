@@ -2,24 +2,25 @@
 // défaut (on log souvent au coucher du soleil, bière à la main).
 
 export const colors = {
-  bg: '#0B1E2D',
-  bgElevated: '#12283A',
-  card: '#16324A',
-  cardBorder: '#1E3E58',
+  // Base aubergine 🍆 — sombre, charnu, un poil salace.
+  bg: '#150A20',
+  bgElevated: '#22103A',
+  card: '#2A143F',
+  cardBorder: '#3D2158',
 
-  text: '#EAF2F8',
-  textMuted: '#8FA9BD',
-  textFaint: '#5E7A90',
+  text: '#F6EAF6',
+  textMuted: '#BBA1CC',
+  textFaint: '#836C97',
 
-  accent: '#2FBFA0', // vert lagon
-  accentDim: '#1E7A66',
-  wave: '#38A3D1', // bleu vague
+  accent: '#FF3D7F', // rose chaud (hot pink)
+  accentDim: '#9C1E4E',
+  wave: '#B06BE6', // violet aubergine
   coral: '#FF7A59', // corail (superlatifs)
   gold: '#F5C451', // podium
   danger: '#E5544B', // refus / contesté
   success: '#3FCF8E', // validé
 
-  overlay: 'rgba(4, 12, 20, 0.72)',
+  overlay: 'rgba(10, 4, 16, 0.74)',
 } as const;
 
 export const radius = {
