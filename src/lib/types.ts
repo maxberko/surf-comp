@@ -109,4 +109,5 @@ export type LedgerEntry = {
   source_id: string;
   points: number;
   created_at: string;
+  label?: string | null; // libellé du fait/superlatif (démo ; sinon résolu par jointure)
 };

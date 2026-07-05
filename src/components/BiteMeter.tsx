@@ -17,6 +17,7 @@ import { CM_PER_BITE, progressToNextBite, resteFromCm } from '@/lib/format';
 import { colors } from '@/theme/colors';
 
 const AnimatedRect = Animated.createAnimatedComponent(Rect);
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 // Repère fixe. Membre "humain" charnu, dessiné en pleine taille (l'objectif),
 // qu'une jauge lumineuse remplit/fait grandir selon la progression (palier 21 cm).
@@ -88,6 +89,26 @@ export function BiteMeter({ totalCm }: { totalCm: number }) {
 
   const fillW = anim.interpolate({ inputRange: [0, 1], outputRange: [34, 140] });
 
+  // Palpitation du gland engorgé quand le palier est imminent.
+  const throb = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    if (!almost) return;
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(throb, { toValue: 1, duration: 440, useNativeDriver: false }),
+        Animated.timing(throb, { toValue: 0, duration: 600, useNativeDriver: false }),
+      ])
+    );
+    loop.start();
+    return () => {
+      loop.stop();
+      throb.setValue(0);
+    };
+  }, [almost, throb]);
+  const glansR = throb.interpolate({ inputRange: [0, 1], outputRange: [17, 20] });
+  const haloR = throb.interpolate({ inputRange: [0, 1], outputRange: [20, 27] });
+  const haloOp = throb.interpolate({ inputRange: [0, 1], outputRange: [0.22, 0.55] });
+
   const gShaft = `s${uid}`;
   const gGlans = `g${uid}`;
   const gGlansHot = `gh${uid}`;
@@ -140,16 +161,9 @@ export function BiteMeter({ totalCm }: { totalCm: number }) {
           <Path d="M6 40 q5 -3 10 -1" stroke="#844d2c" strokeWidth={1.1} fill="none" opacity={0.5} />
         </G>
 
-        {/* Halo chaud quand le palier est imminent */}
-        {almost ? <Circle cx={116} cy={CY} r={23} fill="#FF7A59" opacity={0.4} /> : null}
-
         {/* Membre brillant, révélé/rempli par la jauge */}
         <G clipPath={`url(#${clip})`}>
-          <ShaftGlans
-            fill={`url(#${gShaft})`}
-            glansFill={`url(#${almost ? gGlansHot : gGlans})`}
-            corona="#BB6E51"
-          />
+          <ShaftGlans fill={`url(#${gShaft})`} glansFill={`url(#${gGlans})`} corona="#BB6E51" />
           {/* ombre du dessous (galbe) */}
           <Ellipse cx={60} cy={38} rx={44} ry={4} fill="#8A4E2C" opacity={0.35} />
           {/* réseau de veines sous-cutanées */}
@@ -164,6 +178,16 @@ export function BiteMeter({ totalCm }: { totalCm: number }) {
           <Ellipse cx={111} cy={18} rx={5} ry={3.4} fill="#FFFFFF" opacity={0.5} />
           <Ellipse cx={128} cy={CY} rx={2} ry={5} fill="#7A2E24" opacity={0.72} />
         </G>
+
+        {/* Gland engorgé qui palpite (hors clip, toujours entier à l'approche du palier) */}
+        {almost ? (
+          <G>
+            <AnimatedCircle cx={116} cy={CY} r={haloR} fill="#FF7A59" opacity={haloOp} />
+            <AnimatedCircle cx={116} cy={CY} r={glansR} fill={`url(#${gGlansHot})`} />
+            <Ellipse cx={111} cy={18} rx={5} ry={3.4} fill="#FFFFFF" opacity={0.55} />
+            <Ellipse cx={128} cy={CY} rx={2} ry={5} fill="#7A2E24" opacity={0.72} />
+          </G>
+        ) : null}
       </Svg>
 
       <Text style={styles.label}>

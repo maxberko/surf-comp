@@ -80,28 +80,32 @@ function seed() {
   const awards: Any[] = []; // ouverts par l'utilisateur via "Ouvrir les superlatifs"
   const award_votes: Any[] = [];
 
-  // Ledger (source de vérité du classement) — donne des scores de départ.
-  const L = (user_id: string, source_type: string, points: number) => ({
+  // Ledger (source de vérité du classement) — chaque écriture porte le fait réel.
+  const L = (user_id: string, label: string, points: number, source_type: 'action' | 'award' = 'action') => ({
     id: uid('l'),
     trip_id: 't1',
     user_id,
     source_type,
     source_id: uid('src'),
     points,
+    label,
     created_at: now(),
   });
   const ledger: Any[] = [
-    // Tom : 26 cm -> 🍆 x1
-    L('u-tom', 'action', 3), L('u-tom', 'action', 3), L('u-tom', 'action', 3),
-    L('u-tom', 'action', 3), L('u-tom', 'action', 3), L('u-tom', 'action', 3),
-    L('u-tom', 'action', 3), L('u-tom', 'award', 2), L('u-tom', 'action', 3),
-    // Val : 21 cm -> 🍆 x1 (juste au palier)
-    L('u-val', 'action', 3), L('u-val', 'action', 3), L('u-val', 'action', 3),
-    L('u-val', 'action', 3), L('u-val', 'action', 3), L('u-val', 'action', 3),
-    L('u-val', 'action', 3),
-    // Max (toi) : 17 cm -> 0 🍆, tout proche du palier (gland engorgé)
-    L('u-me', 'action', 3), L('u-me', 'action', 3), L('u-me', 'action', 3),
-    L('u-me', 'action', 3), L('u-me', 'action', 3), L('u-me', 'award', 2),
+    // Tom : 24 cm -> 🍆 x1, faits variés
+    L('u-tom', 'Barrel', 3), L('u-tom', 'Barrel', 3), L('u-tom', 'Barrel', 3),
+    L('u-tom', 'Vague du jour', 2, 'award'), L('u-tom', 'Barrel', 3),
+    L('u-tom', 'Barrel enfermé', 1), L('u-tom', 'Barrel', 3),
+    L('u-tom', 'Plus gros engagement', 2, 'award'), L('u-tom', 'Barrel', 3),
+    L('u-tom', 'Barrel enfermé', 1),
+    // Val : 21 cm -> 🍆 x1
+    L('u-val', 'Barrel', 3), L('u-val', 'Barrel', 3), L('u-val', 'Barrel', 3),
+    L('u-val', 'Barrel', 3), L('u-val', 'Barrel', 3), L('u-val', 'Barrel', 3),
+    L('u-val', 'Cascade du jour', 1, 'award'), L('u-val', 'Plus gros engagement', 2, 'award'),
+    // Max (toi) : 18 cm -> gland engorgé (palier imminent)
+    L('u-me', 'Barrel', 3), L('u-me', 'Barrel', 3), L('u-me', 'Barrel', 3),
+    L('u-me', 'Barrel', 3), L('u-me', 'Barrel', 3), L('u-me', 'Vague du jour', 2, 'award'),
+    L('u-me', 'Barrel enfermé', 1),
   ];
 
   return { profiles, crews, crew_members, trips, score_rules, sessions, actions, action_witnesses, awards, award_votes, ledger };
@@ -118,10 +122,22 @@ function tripOfSession(db: DB, sessionId: string): string | null {
   return t ? t.id : null;
 }
 
-function addLedger(db: DB, tripId: string | null, userId: string, sourceType: string, sourceId: string, points: number) {
+function ruleLabel(db: DB, ruleId: string): string {
+  return db.score_rules.find((r) => r.id === ruleId)?.label ?? 'Fait';
+}
+
+function addLedger(
+  db: DB,
+  tripId: string | null,
+  userId: string,
+  sourceType: string,
+  sourceId: string,
+  points: number,
+  label: string
+) {
   if (!tripId) return;
   if (db.ledger.some((l) => l.source_type === sourceType && l.source_id === sourceId)) return; // idempotent
-  db.ledger.push({ id: uid('l'), trip_id: tripId, user_id: userId, source_type: sourceType, source_id: sourceId, points, created_at: now() });
+  db.ledger.push({ id: uid('l'), trip_id: tripId, user_id: userId, source_type: sourceType, source_id: sourceId, points, label, created_at: now() });
 }
 
 function onWitnessInserted(db: DB, actionId: string) {
@@ -130,7 +146,7 @@ function onWitnessInserted(db: DB, actionId: string) {
   const count = db.action_witnesses.filter((w) => w.action_id === actionId).length;
   if (count >= 2) {
     action.status = 'validated';
-    addLedger(db, tripOfSession(db, action.session_id), action.user_id, 'action', action.id, action.points);
+    addLedger(db, tripOfSession(db, action.session_id), action.user_id, 'action', action.id, action.points, ruleLabel(db, action.rule_id));
   }
 }
 
@@ -393,7 +409,7 @@ function rpc(db: DB, fn: string, args: any): { data: any; error: any } {
       if (winner) {
         const rule = db.score_rules.find((r) => r.id === award.rule_id);
         const session = db.sessions.find((s) => s.id === award.session_id);
-        addLedger(db, session?.trip_id ?? null, winner[0], 'award', award.id, rule?.points ?? 0);
+        addLedger(db, session?.trip_id ?? null, winner[0], 'award', award.id, rule?.points ?? 0, rule?.label ?? 'Superlatif');
       }
       return { data: award, error: null };
     }

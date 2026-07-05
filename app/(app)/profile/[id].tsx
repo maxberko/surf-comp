@@ -56,9 +56,17 @@ export default function ProfileScreen() {
         }
         renderItem={({ item }: { item: LedgerEntry }) => (
           <View style={styles.entry}>
-            <Text style={styles.entrySource}>
-              {item.source_type === 'award' ? '🏅 Superlatif' : '🌊 Fait validé'}
-            </Text>
+            <View style={styles.entryLeft}>
+              <Text style={styles.entryEmoji}>{item.source_type === 'award' ? '🏅' : '🌊'}</Text>
+              <View>
+                <Text style={styles.entrySource}>
+                  {item.label ?? (item.source_type === 'award' ? 'Superlatif' : 'Fait validé')}
+                </Text>
+                <Text style={styles.entryKind}>
+                  {item.source_type === 'award' ? 'Superlatif' : 'Fait validé'}
+                </Text>
+              </View>
+            </View>
             <Text style={[styles.entryPts, item.points < 0 && styles.entryPtsNeg]}>
               {signed(item.points)} cm
             </Text>
@@ -103,7 +111,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.cardBorder,
   },
-  entrySource: { color: colors.text, fontSize: 15, fontWeight: '600' },
+  entryLeft: { flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 },
+  entryEmoji: { fontSize: 18 },
+  entrySource: { color: colors.text, fontSize: 15, fontWeight: '700' },
+  entryKind: { color: colors.textFaint, fontSize: 11, fontWeight: '600' },
   entryPts: { color: colors.success, fontWeight: '800', fontSize: 15 },
   entryPtsNeg: { color: colors.danger },
   footer: { paddingTop: spacing.xl },
