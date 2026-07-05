@@ -22,10 +22,9 @@ type Any = Record<string, any>;
 // --------------------------------------------------------------------------
 function seed() {
   const profiles: Any[] = [
-    { id: 'u-me', pseudo: 'Toi', avatar_url: null, created_at: now() },
-    { id: 'u-lea', pseudo: 'Léa', avatar_url: null, created_at: now() },
-    { id: 'u-nico', pseudo: 'Nico', avatar_url: null, created_at: now() },
-    { id: 'u-sam', pseudo: 'Sam', avatar_url: null, created_at: now() },
+    { id: 'u-me', pseudo: 'Max', avatar_url: null, created_at: now() },
+    { id: 'u-tom', pseudo: 'Tom', avatar_url: null, created_at: now() },
+    { id: 'u-val', pseudo: 'Val', avatar_url: null, created_at: now() },
   ];
 
   const crews: Any[] = [
@@ -61,22 +60,21 @@ function seed() {
   ];
 
   const sessions: Any[] = [
-    { id: 's1', trip_id: 't1', spot: 'Popoyo Main', date: todayStr(), created_by: 'u-lea', created_at: now() },
+    { id: 's1', trip_id: 't1', spot: 'Popoyo Main', date: todayStr(), created_by: 'u-tom', created_at: now() },
   ];
 
   // Faits du jour (feed de la session)
   const actions: Any[] = [
-    { id: 'a1', session_id: 's1', user_id: 'u-lea', rule_id: 'r-barrel', points: 3, status: 'validated', media_url: null, created_at: now() },
-    { id: 'a2', session_id: 's1', user_id: 'u-nico', rule_id: 'r-refus', points: -1, status: 'proposed', media_url: null, created_at: now() },
-    { id: 'a3', session_id: 's1', user_id: 'u-sam', rule_id: 'r-barrel_enferme', points: 1, status: 'proposed', media_url: null, created_at: now() },
-    { id: 'a4', session_id: 's1', user_id: 'u-me', rule_id: 'r-barrel', points: 3, status: 'proposed', media_url: null, created_at: now() },
+    { id: 'a1', session_id: 's1', user_id: 'u-tom', rule_id: 'r-barrel', points: 3, status: 'validated', media_url: null, created_at: now() },
+    { id: 'a2', session_id: 's1', user_id: 'u-val', rule_id: 'r-refus', points: -1, status: 'proposed', media_url: null, created_at: now() },
+    { id: 'a3', session_id: 's1', user_id: 'u-me', rule_id: 'r-barrel_enferme', points: 1, status: 'proposed', media_url: null, created_at: now() },
   ];
 
   const action_witnesses: Any[] = [
-    { action_id: 'a1', user_id: 'u-nico', created_at: now() },
-    { action_id: 'a1', user_id: 'u-sam', created_at: now() },
-    { action_id: 'a2', user_id: 'u-lea', created_at: now() }, // 1/2 : à toi de valider
-    { action_id: 'a4', user_id: 'u-lea', created_at: now() }, // ton fait, en attente
+    { action_id: 'a1', user_id: 'u-val', created_at: now() },
+    { action_id: 'a1', user_id: 'u-me', created_at: now() },
+    { action_id: 'a2', user_id: 'u-tom', created_at: now() }, // 1/2 : à toi (Max) de valider
+    { action_id: 'a3', user_id: 'u-tom', created_at: now() }, // ton fait, en attente d'un 2e témoin
   ];
 
   const awards: Any[] = []; // ouverts par l'utilisateur via "Ouvrir les superlatifs"
@@ -93,19 +91,17 @@ function seed() {
     created_at: now(),
   });
   const ledger: Any[] = [
-    // Léa : 26 cm -> 🍆 x1
-    L('u-lea', 'action', 3), L('u-lea', 'action', 3), L('u-lea', 'action', 3),
-    L('u-lea', 'action', 3), L('u-lea', 'action', 3), L('u-lea', 'action', 3),
-    L('u-lea', 'action', 3), L('u-lea', 'award', 2), L('u-lea', 'action', 3),
-    // Nico : 21 cm -> 🍆 x1 (juste au palier)
-    L('u-nico', 'action', 3), L('u-nico', 'action', 3), L('u-nico', 'action', 3),
-    L('u-nico', 'action', 3), L('u-nico', 'action', 3), L('u-nico', 'action', 3),
-    L('u-nico', 'action', 3),
-    // Toi : 20 cm -> 0 🍆, à 1 cm du palier
+    // Tom : 26 cm -> 🍆 x1
+    L('u-tom', 'action', 3), L('u-tom', 'action', 3), L('u-tom', 'action', 3),
+    L('u-tom', 'action', 3), L('u-tom', 'action', 3), L('u-tom', 'action', 3),
+    L('u-tom', 'action', 3), L('u-tom', 'award', 2), L('u-tom', 'action', 3),
+    // Val : 21 cm -> 🍆 x1 (juste au palier)
+    L('u-val', 'action', 3), L('u-val', 'action', 3), L('u-val', 'action', 3),
+    L('u-val', 'action', 3), L('u-val', 'action', 3), L('u-val', 'action', 3),
+    L('u-val', 'action', 3),
+    // Max (toi) : 17 cm -> 0 🍆, tout proche du palier (gland engorgé)
     L('u-me', 'action', 3), L('u-me', 'action', 3), L('u-me', 'action', 3),
     L('u-me', 'action', 3), L('u-me', 'action', 3), L('u-me', 'award', 2),
-    // Sam : 6 cm
-    L('u-sam', 'action', 3), L('u-sam', 'action', 3),
   ];
 
   return { profiles, crews, crew_members, trips, score_rules, sessions, actions, action_witnesses, awards, award_votes, ledger };
