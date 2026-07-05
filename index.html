@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-store, max-age=0" />
     <title>PoyPoyo Surf</title>
-    <meta http-equiv="refresh" content="0; url=./docs/" />
     <link rel="canonical" href="./docs/" />
     <style>
       html, body { height: 100%; margin: 0; background: #0B1E2D; color: #EAF2F8;
@@ -14,9 +14,12 @@
       a { color: #2FBFA0; font-weight: 800; text-decoration: none; font-size: 18px; }
     </style>
     <script>
-      // Forward to the app (keeps query/hash). This page only shows if JS+refresh both stall.
-      location.replace('./docs/' + location.search + location.hash);
+      // Redirige vers l'app en cassant le cache du HTML à chaque visite, pour que
+      // la dernière build soit toujours chargée (le bundle JS est hashé/immuable,
+      // donc pas re-téléchargé inutilement).
+      location.replace('./docs/?cb=' + Date.now() + location.hash);
     </script>
+    <noscript><meta http-equiv="refresh" content="0; url=./docs/" /></noscript>
   </head>
   <body>
     <div class="wrap">
