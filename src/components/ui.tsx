@@ -12,11 +12,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { DickPattern } from '@/components/DickPattern';
 import { colors, radius, spacing } from '@/theme/colors';
 
 export function Screen({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
   return (
     <SafeAreaView style={styles.screen} edges={['top', 'left', 'right']}>
+      <DickPattern />
       <View style={[styles.screenInner, style]}>{children}</View>
     </SafeAreaView>
   );

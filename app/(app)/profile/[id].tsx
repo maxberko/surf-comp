@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import { Avatar } from '@/components/Avatar';
 import { BiteMeter } from '@/components/BiteMeter';
+import { DickGlyph } from '@/components/DickGlyph';
 import { Button, Card, EmptyState, Loader, Screen, Subtitle } from '@/components/ui';
 import { bitesLabel, cm, signed } from '@/lib/format';
 import { useActiveTrip, useJournal, useProfile, useScores } from '@/lib/queries';
@@ -40,6 +41,7 @@ export default function ProfileScreen() {
             <Card style={styles.scoreCard}>
               <View style={styles.scoreRow}>
                 <View style={styles.scoreCell}>
+                  <DickGlyph size={30} />
                   <Text style={styles.scoreBig}>{bitesLabel(me?.bites_de_surf ?? 0)}</Text>
                   <Text style={styles.scoreLabel}>bites de surf</Text>
                 </View>
