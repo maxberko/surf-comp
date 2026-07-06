@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+import { confirm } from '@/lib/confirm';
 
 import { Avatar } from '@/components/Avatar';
 import { Button, Card, EmptyState, Loader, Pill, Screen, Subtitle, Title } from '@/components/ui';
@@ -91,13 +93,12 @@ function AwardCard({
             label="Clôturer & attribuer"
             variant="ghost"
             onPress={() =>
-              Alert.alert('Clôturer ce superlatif ?', 'Le plus voté remporte les points.', [
-                { text: 'Annuler', style: 'cancel' },
-                {
-                  text: 'Clôturer',
-                  onPress: () => closeAward.mutate({ awardId: award.id, sessionId }),
-                },
-              ])
+              confirm(
+                'Clôturer ce superlatif ?',
+                'Le plus voté remporte les points.',
+                () => closeAward.mutate({ awardId: award.id, sessionId }),
+                'Clôturer'
+              )
             }
             disabled={votes.length === 0}
           />

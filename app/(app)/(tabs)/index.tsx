@@ -51,7 +51,13 @@ export default function Classement() {
   const startNewTrip = () => {
     if (!crew) return;
     const confirmMsg = 'Le classement repart de zéro (l’historique reste).';
-    // Alert.prompt n'existe que sur iOS.
+    // Web : window.prompt (Alert.alert/prompt de react-native-web ne déclenche
+    // pas les callbacks des boutons).
+    if (Platform.OS === 'web') {
+      const name = typeof window !== 'undefined' ? window.prompt(`Nouveau trip — ${confirmMsg}\nNom du trip :`, '') : '';
+      if (name !== null) runNewTrip(name ?? '');
+      return;
+    }
     if (Platform.OS === 'ios' && Alert.prompt) {
       Alert.prompt('Nouveau trip', `${confirmMsg}\nNom du trip :`, (name) => runNewTrip(name ?? ''));
       return;
